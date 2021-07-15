@@ -1,97 +1,99 @@
-var firstClassRent = parseInt(document.getElementById('first-class-cost').innerText);
-var economyClassRent = parseInt(document.getElementById('economy-class-cost').innerText);
+const first_class_rent = parseInt(getMyElement('first-class-cost').innerText);
+const economy_class_rent = parseInt(getMyElement('economy-class-cost').innerText);
+const vat_percentage = 10;
 
-function getInputElement() {
-    var getInputElement = document.getElementById('flyFrom').value;
-    document.getElementById('flyingForm').innerText = getInputElement;
-
-    var getInputElement = document.getElementById('flyTo').value;
-    document.getElementById('flyingTo').innerText = getInputElement;
-
-    var getInputElement = document.getElementById('departure').value;
-    document.getElementById('departure-date').innerText = getInputElement;
-
-    var getInputElement = document.getElementById('return').value;
-    document.getElementById('return-date').innerText = getInputElement;
-
-
-    var firstClassCostValue = getInputHistory('first');
-    var economyClassCostValue = getInputHistory('economy');
-    var subtotal = firstClassCostValue * firstClassRent + economyClassCostValue * economyClassRent;
-    document.getElementById('subtotal').innerText = subtotal;
-    var CountryVat = 0.1 * subtotal;
-    document.getElementById('vat').innerText = CountryVat;
-    var grandTotal = subtotal + CountryVat;
-    document.getElementById('grand-total').innerText = grandTotal;
-
-    document.getElementById('subTotal').innerText = subtotal;
-
-    document.getElementById('Vat-chagre').innerText = CountryVat;
-
-    document.getElementById('Total-calc').innerText = grandTotal;
-
-    var getInputElement = document.getElementById('first-class-history').value;
-    document.getElementById('first-class').innerText = getInputElement;
-    var getInputElement = document.getElementById('economy-class-history').value;
-    document.getElementById('economy-class').innerText = getInputElement;
-
-    document.getElementById('first-class-Fixed-price').innerText = firstClassRent;
-    document.getElementById('economy-class-Fixed-price').innerText = economyClassRent;
-
-    document.getElementById('first-class-Fixed-price-total').innerText = firstClassCostValue * firstClassRent;
-
-    document.getElementById('economy-class-Fixed-price-total').innerText =  economyClassCostValue * economyClassRent;
-
-    
-    console.log(firstClassCostValue);
-
-    
-
-    
+// Get ElementBy Function
+function getMyElement(element_id) {
+    return document.getElementById(element_id);
 }
 
+// Get input value Number & string
+function getInputValueById(element_id, is_return_type_number = true) {
+    let get_element = getMyElement(element_id);
 
+    if (is_return_type_number) {
+        return parseInt(get_element.value);
+    } else {
+        return get_element.value;
+    }
+}
 
+// All input Value & calculation function
+function getInputElement() {
+    getMyElement('flyingForm').innerText = getInputValueById('flyFrom', false);
+    getMyElement('flyingTo').innerText = getInputValueById('flyTo', false);
+    getMyElement('departure-date').innerText = getInputValueById('departure', false);
+    getMyElement('return-date').innerText = getInputValueById('return', false);
 
-console.log(getInputElement);
+    let first_class_qty = getInputValueById('first-class-history');
+    let economy_class_qty = getInputValueById('economy-class-history');
 
-// get input value
-function getInputHistory(inputName) {
-    var getInputName = document.getElementById(inputName + '-class-history');
-    var getInputValue = parseInt(getInputName.value);
-    return getInputValue;
+    getMyElement('first-class').innerText = first_class_qty;
+    getMyElement('first-class-Fixed-price').innerText = first_class_rent;
+    getMyElement('first-class-Fixed-price-total').innerText = first_class_qty * first_class_rent;
+
+    getMyElement('economy-class').innerText = economy_class_qty;
+    getMyElement('economy-class-Fixed-price').innerText = economy_class_rent;
+    getMyElement('economy-class-Fixed-price-total').innerText =  economy_class_qty * economy_class_rent;
+
+    
+    getMyElement('invoice-sub-total').innerText = getSubtotal();
+    getMyElement('invoice-vat').innerText = getVat();
+    getMyElement('invoice-total').innerText = getTotal();  
 }
 
 
 // count handler function
-function countHandler(isIncrement, inputName) {
-    var inputValue = getInputHistory(inputName);
+function countHandler(isIncrement, input_id) {
+    var inputValue = getInputValueById(input_id);
     var incrementValue = inputValue;
     // increment & decrement condition 
     if (isIncrement) {
-        var incrementValue = inputValue + 1;
+        incrementValue = inputValue + 1;
     } else {
-        var incrementValue = inputValue - 1;
-        if (incrementValue < 0) {
-            var incrementValue = 0;
+        if ((inputValue - 1) < 0) {
+            incrementValue = 0;
+        } else {
+            incrementValue = inputValue - 1;
         }
     }
      // set input value
-    document.getElementById(inputName + "-class-history").value = incrementValue;
-    console.log(incrementValue);
+     getMyElement(input_id).value = incrementValue;
+
     calculateCost();
 }
 
 
-// total calculation math & set subTotal , VAT , Grand Total set
+// Sub Total calculate
+function getSubtotal() {
+    let first_class_cost_value = getInputValueById('first-class-history');
+    let economy_class_cost_value = getInputValueById('economy-class-history');
+
+    let subtotal = first_class_cost_value * first_class_rent + economy_class_cost_value * economy_class_rent;
+
+    return subtotal;
+}
+
+// vat percentage calculate
+function getVat() {
+    let calculated_vat_percentage = vat_percentage / 100;
+    let vat = calculated_vat_percentage * getSubtotal();
+
+    return vat;
+}
+
+// Grand Total
+function getTotal() {
+    return getSubtotal() + getVat();
+}
+
+
+// total calculation math & set subTotal , VAT , Grand Total
 function calculateCost() {
-    var firstClassCostValue = getInputHistory('first');
-    var economyClassCostValue = getInputHistory('economy');
-    var subtotal = firstClassCostValue * firstClassRent + economyClassCostValue * economyClassRent;
-    document.getElementById('subtotal').innerText = subtotal;
-    var CountryVat = 0.1 * subtotal;
-    document.getElementById('vat').innerText = CountryVat;
-    var grandTotal = subtotal + CountryVat;
-    document.getElementById('grand-total').innerText = grandTotal;
+    getMyElement('subtotal').innerText = getSubtotal();
+
+    getMyElement('vat').innerText =  getVat();
+
+    getMyElement('grand-total').innerText = getTotal();
 }
 

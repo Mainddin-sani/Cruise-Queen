@@ -63,9 +63,9 @@
 
                 <label for="">First Class ($ <span id="first-class-cost">150</span>)</label>
                 <div class="f-class">
-                    <button onclick="countHandler(false, 'first')">-</button>
+                    <button onclick="countHandler(false, 'first-class-history')">-</button>
                     <input class=" inp-style inp-width" id="first-class-history" type="number" value="0" name="">
-                    <button onclick="countHandler(true, 'first')">+</button>
+                    <button onclick="countHandler(true, 'first-class-history')">+</button>
                 </div>
 
                 <!-- <div class="plus-minus-btn">
@@ -76,9 +76,9 @@
             <div class="input-group">
                 <label for="">Economy ($ <span id="economy-class-cost">100</span>)</label>
                 <div class="f-class">
-                    <button onclick="countHandler(false, 'economy')">-</button>
+                    <button onclick="countHandler(false, 'economy-class-history')">-</button>
                     <input class="inp-style inp-width" id="economy-class-history" type="number" value="0" name="">
-                    <button onclick="countHandler(true, 'economy')">+</button>
+                    <button onclick="countHandler(true, 'economy-class-history')">+</button>
                 </div>
             </div>
             <div class="calculations">
@@ -164,15 +164,15 @@
                         </tr>
                         <tr>
                             <td>Subtotal :</td>
-                            <td class="text-right"><span id="subTotal"></span></td>
+                            <td class="text-right"><span id="invoice-sub-total"></span></td>
                         </tr>
                         <tr>
                             <td>Charge 10% VAT :</td>
-                            <td class="text-right"><span id="Vat-chagre"></span></td>
+                            <td class="text-right"><span id="invoice-vat"></span></td>
                         </tr>
                         <tr>
                             <td>Total :</td>
-                            <td class="text-right"><span id="Total-calc"></span></td>
+                            <td class="text-right"><span id="invoice-total"></span></td>
                         </tr>
                     </table>
                 </div>
